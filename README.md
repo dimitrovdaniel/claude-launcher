@@ -39,7 +39,7 @@ Head to the [Releases](../../releases) page and download the build for your plat
 ### Build from source
 
 ```bash
-git clone https://github.com/yourusername/claude-launcher.git
+git clone https://github.com/dimitrovdaniel/claude-launcher.git
 cd claude-launcher
 dotnet build
 dotnet run
