@@ -1,0 +1,442 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:ClaudeLauncher.ViewModels"
+        xmlns:models="using:ClaudeLauncher.Models"
+        xmlns:conv="using:ClaudeLauncher.Converters"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="980" d:DesignHeight="640"
+        x:Class="ClaudeLauncher.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Icon="/Assets/icon.png"
+        Title="Claude Launcher"
+        Width="1020" Height="640"
+        MinWidth="800" MinHeight="480">
+
+    <Design.DataContext>
+        <vm:MainWindowViewModel/>
+    </Design.DataContext>
+
+    <Window.Resources>
+        <conv:StringEqualsConverter x:Key="StrEq"/>
+    </Window.Resources>
+
+    <Window.Styles>
+        <Style Selector="TextBlock.h1">
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Margin" Value="0,0,0,4"/>
+        </Style>
+        <Style Selector="TextBlock.label">
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Opacity" Value="0.7"/>
+            <Setter Property="Margin" Value="0,0,0,4"/>
+        </Style>
+        <Style Selector="TextBlock.subtle">
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Opacity" Value="0.6"/>
+        </Style>
+        <!-- Default button: clean outlined -->
+        <Style Selector="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource SystemControlForegroundBaseMediumLowBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="6"/>
+            <Setter Property="Padding" Value="14,7"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontWeight" Value="Medium"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+        <Style Selector="Button:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource SystemControlHighlightListLowBrush}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
+        </Style>
+        <Style Selector="Button:pressed /template/ ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource SystemControlHighlightListMediumBrush}"/>
+        </Style>
+
+        <!-- Primary: filled blue -->
+        <Style Selector="Button.primary">
+            <Setter Property="Background" Value="#2563EB"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="#1D4ED8"/>
+            <Setter Property="Padding" Value="20,9"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+        </Style>
+        <Style Selector="Button.primary:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="#1D4ED8"/>
+            <Setter Property="BorderBrush" Value="#1E40AF"/>
+        </Style>
+        <Style Selector="Button.primary:pressed /template/ ContentPresenter">
+            <Setter Property="Background" Value="#1E3A8A"/>
+        </Style>
+
+        <!-- Accent: filled purple for Add -->
+        <Style Selector="Button.accent">
+            <Setter Property="Background" Value="#7C3AED"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="#6D28D9"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+        </Style>
+        <Style Selector="Button.accent:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="#6D28D9"/>
+            <Setter Property="BorderBrush" Value="#5B21B6"/>
+        </Style>
+        <Style Selector="Button.accent:pressed /template/ ContentPresenter">
+            <Setter Property="Background" Value="#5B21B6"/>
+        </Style>
+
+        <!-- Danger: subtle red outline -->
+        <Style Selector="Button.danger">
+            <Setter Property="Foreground" Value="#DC2626"/>
+            <Setter Property="BorderBrush" Value="#FCA5A5"/>
+        </Style>
+        <Style Selector="Button.danger:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="#FEE2E2"/>
+            <Setter Property="BorderBrush" Value="#DC2626"/>
+            <Setter Property="TextElement.Foreground" Value="#B91C1C"/>
+        </Style>
+
+        <!-- Ghost: borderless, for subtle row actions -->
+        <Style Selector="Button.ghost">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="8,4"/>
+            <Setter Property="CornerRadius" Value="4"/>
+            <Setter Property="Opacity" Value="0.5"/>
+            <Setter Property="FontSize" Value="12"/>
+        </Style>
+        <Style Selector="Button.ghost:pointerover">
+            <Setter Property="Opacity" Value="1"/>
+        </Style>
+        <Style Selector="Button.ghost:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="#FEE2E2"/>
+            <Setter Property="TextElement.Foreground" Value="#DC2626"/>
+        </Style>
+        <Style Selector="Border.panel">
+            <Setter Property="Background" Value="{DynamicResource SystemControlBackgroundAltHighBrush}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource SystemControlForegroundBaseLowBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="6"/>
+        </Style>
+
+        <Style Selector="GridSplitter">
+            <Setter Property="Background" Value="Transparent"/>
+        </Style>
+        <Style Selector="GridSplitter:pointerover">
+            <Setter Property="Background" Value="#332563EB"/>
+        </Style>
+
+        <!-- Color swatch -->
+        <Style Selector="Button.swatch">
+            <Setter Property="Width" Value="26"/>
+            <Setter Property="Height" Value="26"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="CornerRadius" Value="13"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Margin" Value="0"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+        <Style Selector="Button.swatch /template/ ContentPresenter">
+            <Setter Property="CornerRadius" Value="13"/>
+        </Style>
+        <Style Selector="Button.swatch:pointerover /template/ ContentPresenter">
+            <Setter Property="Opacity" Value="0.85"/>
+        </Style>
+    </Window.Styles>
+
+    <Grid RowDefinitions="*,Auto" Margin="16">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="320" MinWidth="220"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*" MinWidth="420"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Left: project list -->
+        <Border Grid.Column="0" Grid.Row="0" Classes="panel" Padding="12">
+            <DockPanel LastChildFill="True">
+                <TextBlock DockPanel.Dock="Top" Classes="h1" Text="Projects"/>
+                <Grid DockPanel.Dock="Bottom" ColumnDefinitions="*,*" Margin="0,8,0,0">
+                    <Button Grid.Column="0" Classes="accent" Content="＋  New project"
+                            Command="{Binding AddProjectCommand}"
+                            HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"
+                            Margin="0,0,4,0"/>
+                    <Button Grid.Column="1" Classes="danger" Content="Delete"
+                            Command="{Binding DeleteProjectCommand}"
+                            HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"
+                            Margin="4,0,0,0"/>
+                </Grid>
+                <TreeView ItemsSource="{Binding ClientGroups}"
+                          SelectedItem="{Binding SelectedTreeItem, Mode=TwoWay}"
+                          Background="Transparent"
+                          BorderThickness="0"
+                          ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                    <TreeView.Styles>
+                        <Style Selector="TreeViewItem">
+                            <Setter Property="IsExpanded" Value="{ReflectionBinding IsExpanded, FallbackValue=False, Mode=TwoWay}"/>
+                        </Style>
+                    </TreeView.Styles>
+                    <TreeView.DataTemplates>
+                        <TreeDataTemplate DataType="vm:ClientGroupViewModel" ItemsSource="{Binding Projects}">
+                            <Grid ColumnDefinitions="Auto,*,Auto" Margin="0,3">
+                                <TextBlock Text="{Binding Icon}"
+                                           Foreground="{Binding AccentBrush}"
+                                           FontSize="13" FontWeight="Bold"
+                                           Margin="0,0,8,0" VerticalAlignment="Center"/>
+                                <TextBlock Grid.Column="1" Text="{Binding DisplayName}"
+                                           Foreground="{Binding AccentBrush}"
+                                           FontWeight="SemiBold"
+                                           TextTrimming="CharacterEllipsis"
+                                           VerticalAlignment="Center"/>
+                                <Border Grid.Column="2" Margin="8,0,0,0"
+                                        Background="{Binding AccentBackgroundBrush}"
+                                        CornerRadius="8" Padding="7,1">
+                                    <TextBlock Text="{Binding Projects.Count}"
+                                               Foreground="{Binding AccentBrush}"
+                                               FontSize="11" FontWeight="SemiBold"/>
+                                </Border>
+                            </Grid>
+                        </TreeDataTemplate>
+                        <DataTemplate DataType="vm:ProjectViewModel">
+                            <Grid ColumnDefinitions="Auto,*" Margin="2,4">
+                                <Ellipse Width="8" Height="8"
+                                         Fill="{Binding ClientAccentBrush}"
+                                         Margin="0,7,8,0"
+                                         VerticalAlignment="Top"/>
+                                <StackPanel Grid.Column="1">
+                                    <TextBlock Text="{Binding DisplayName}"
+                                               FontWeight="SemiBold"
+                                               TextTrimming="CharacterEllipsis"/>
+                                    <TextBlock Text="{Binding RepositoryPath}"
+                                               Classes="subtle"
+                                               TextTrimming="PrefixCharacterEllipsis"/>
+                                </StackPanel>
+                            </Grid>
+                        </DataTemplate>
+                    </TreeView.DataTemplates>
+                </TreeView>
+            </DockPanel>
+        </Border>
+
+        <!-- Resizable splitter between sidebar and details -->
+        <GridSplitter Grid.Column="1" Grid.Row="0"
+                      Width="6" Margin="3,0"
+                      Background="Transparent"
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Stretch"
+                      ResizeDirection="Columns"
+                      ResizeBehavior="PreviousAndNext"
+                      ShowsPreview="False"/>
+
+        <!-- Right: project details -->
+        <Border Grid.Column="2" Grid.Row="0" Classes="panel" Padding="20">
+            <Grid>
+                <!-- Empty state -->
+                <StackPanel IsVisible="{Binding SelectedProject, Converter={x:Static ObjectConverters.IsNull}}"
+                            HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="6">
+                    <TextBlock Text="No project selected" Classes="h1" HorizontalAlignment="Center"/>
+                    <TextBlock Text="Add a project to get started." Classes="subtle" HorizontalAlignment="Center"/>
+                </StackPanel>
+
+                <!-- Details -->
+                <Grid IsVisible="{Binding SelectedProject, Converter={x:Static ObjectConverters.IsNotNull}}">
+                <ScrollViewer DataContext="{Binding SelectedProject}"
+                              x:DataType="vm:ProjectViewModel"
+                              VerticalScrollBarVisibility="Auto"
+                              Padding="0,0,12,0">
+                    <StackPanel Spacing="16">
+
+                        <StackPanel Spacing="4">
+                            <TextBlock Text="CLIENT" Classes="label"/>
+                            <TextBlock Classes="subtle" Text="Group projects under a shared client. Leave empty for Unassigned."/>
+                            <TextBox Text="{Binding ClientName, Mode=TwoWay}" PlaceholderText="e.g. Acme Corp"/>
+                        </StackPanel>
+
+                        <StackPanel Spacing="4">
+                            <TextBlock Text="PROJECT NAME" Classes="label"/>
+                            <TextBox Text="{Binding Name, Mode=TwoWay}" PlaceholderText="e.g. My Backend API"/>
+                        </StackPanel>
+
+                        <StackPanel Spacing="4">
+                            <TextBlock Text="COLOR INDICATOR" Classes="label"/>
+                            <TextBlock Classes="subtle" Text="Applies to the client node and to every project under it."/>
+                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                <Button Classes="swatch" Background="#CBD5E1"
+                                        Command="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).SetClientColorCommand}"
+                                        CommandParameter="#CBD5E1" ToolTip.Tip="Pale gray (default)">
+                                    <TextBlock Text="✓" Foreground="#1F2937" FontWeight="Bold"
+                                               IsVisible="{Binding ClientColor, Converter={StaticResource StrEq}, ConverterParameter=#CBD5E1}"/>
+                                </Button>
+                                <Button Classes="swatch" Background="#A855F7"
+                                        Command="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).SetClientColorCommand}"
+                                        CommandParameter="#A855F7" ToolTip.Tip="Purple">
+                                    <TextBlock Text="✓" Foreground="White" FontWeight="Bold"
+                                               IsVisible="{Binding ClientColor, Converter={StaticResource StrEq}, ConverterParameter=#A855F7}"/>
+                                </Button>
+                                <Button Classes="swatch" Background="#EF4444"
+                                        Command="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).SetClientColorCommand}"
+                                        CommandParameter="#EF4444" ToolTip.Tip="Red">
+                                    <TextBlock Text="✓" Foreground="White" FontWeight="Bold"
+                                               IsVisible="{Binding ClientColor, Converter={StaticResource StrEq}, ConverterParameter=#EF4444}"/>
+                                </Button>
+                                <Button Classes="swatch" Background="#F97316"
+                                        Command="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).SetClientColorCommand}"
+                                        CommandParameter="#F97316" ToolTip.Tip="Orange">
+                                    <TextBlock Text="✓" Foreground="White" FontWeight="Bold"
+                                               IsVisible="{Binding ClientColor, Converter={StaticResource StrEq}, ConverterParameter=#F97316}"/>
+                                </Button>
+                                <Button Classes="swatch" Background="#22C55E"
+                                        Command="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).SetClientColorCommand}"
+                                        CommandParameter="#22C55E" ToolTip.Tip="Green">
+                                    <TextBlock Text="✓" Foreground="White" FontWeight="Bold"
+                                               IsVisible="{Binding ClientColor, Converter={StaticResource StrEq}, ConverterParameter=#22C55E}"/>
+                                </Button>
+                                <Button Classes="swatch" Background="#3B82F6"
+                                        Command="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).SetClientColorCommand}"
+                                        CommandParameter="#3B82F6" ToolTip.Tip="Blue">
+                                    <TextBlock Text="✓" Foreground="White" FontWeight="Bold"
+                                               IsVisible="{Binding ClientColor, Converter={StaticResource StrEq}, ConverterParameter=#3B82F6}"/>
+                                </Button>
+                                <Button Classes="swatch" Background="#EC4899"
+                                        Command="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).SetClientColorCommand}"
+                                        CommandParameter="#EC4899" ToolTip.Tip="Pink">
+                                    <TextBlock Text="✓" Foreground="White" FontWeight="Bold"
+                                               IsVisible="{Binding ClientColor, Converter={StaticResource StrEq}, ConverterParameter=#EC4899}"/>
+                                </Button>
+                            </StackPanel>
+                        </StackPanel>
+
+                        <StackPanel Spacing="4">
+                            <TextBlock Text="REPOSITORY PATH" Classes="label"/>
+                            <Grid ColumnDefinitions="*,Auto">
+                                <TextBox Grid.Column="0" Text="{Binding RepositoryPath, Mode=TwoWay}"
+                                         PlaceholderText="C:\path\to\your\repo"/>
+                                <Button Grid.Column="1" Content="📁  Browse" Margin="8,0,0,0"
+                                        Command="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).BrowseRepoCommand}"/>
+                            </Grid>
+                        </StackPanel>
+
+                        <StackPanel Spacing="4">
+                            <TextBlock Text="RELEVANT FILES" Classes="label"/>
+                            <TextBlock Classes="subtle" Text="Files Claude should read on startup (relative to the repo root)."/>
+                            <Border BorderBrush="{DynamicResource SystemControlForegroundBaseLowBrush}"
+                                    BorderThickness="1" CornerRadius="4" Padding="4" MinHeight="90">
+                                <ItemsControl ItemsSource="{Binding RelevantFiles}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate x:DataType="x:String">
+                                            <Grid ColumnDefinitions="*,Auto" Margin="4,3">
+                                                <TextBlock Grid.Column="0" Text="{Binding}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+                                                <Button Grid.Column="1" Classes="ghost" Content="✕"
+                                                        ToolTip.Tip="Remove file"
+                                                        Command="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).RemoveFileCommand}"
+                                                        CommandParameter="{Binding}"/>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </Border>
+                            <Grid ColumnDefinitions="*,Auto,Auto" Margin="0,4,0,0">
+                                <TextBox Grid.Column="0"
+                                         Text="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).NewFileInput, Mode=TwoWay}"
+                                         PlaceholderText="path/to/file.cs"/>
+                                <Button Grid.Column="1" Content="＋  Add" Margin="8,0,0,0"
+                                        Command="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).AddFileFromInputCommand}"/>
+                                <Button Grid.Column="2" Content="📄  Pick" Margin="8,0,0,0"
+                                        Command="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).AddFileFromPickerCommand}"/>
+                            </Grid>
+                        </StackPanel>
+
+                        <StackPanel Spacing="4">
+                            <TextBlock Text="PROJECT NOTES" Classes="label"/>
+                            <TextBlock Classes="subtle" Text="Persistent guidelines Claude reads on every launch. Stored under .claude-launcher/notes/ in the repo."/>
+
+                            <Border IsVisible="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).IsEditingNote}"
+                                    Background="{DynamicResource SystemControlBackgroundBaseLowBrush}"
+                                    BorderBrush="{DynamicResource SystemControlForegroundBaseLowBrush}"
+                                    BorderThickness="1" CornerRadius="6" Padding="12" Margin="0,4,0,0">
+                                <StackPanel Spacing="8">
+                                    <TextBlock Text="NAME" Classes="label"/>
+                                    <TextBox Text="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).EditingNoteName, Mode=TwoWay}"
+                                             PlaceholderText="e.g. coding-standards"/>
+                                    <TextBlock Text="CONTENT" Classes="label"/>
+                                    <TextBox Text="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).EditingNoteContent, Mode=TwoWay}"
+                                             AcceptsReturn="True" TextWrapping="Wrap" MinHeight="140"
+                                             PlaceholderText="Paste coding guidelines, conventions, project context…"/>
+                                    <Grid ColumnDefinitions="*,Auto,Auto">
+                                        <Button Grid.Column="1" Content="Cancel"
+                                                Command="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).CancelNoteCommand}"/>
+                                        <Button Grid.Column="2" Classes="accent" Content="💾  Save note" Margin="8,0,0,0"
+                                                Command="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).SaveNoteCommand}"/>
+                                    </Grid>
+                                </StackPanel>
+                            </Border>
+
+                            <Border BorderBrush="{DynamicResource SystemControlForegroundBaseLowBrush}"
+                                    BorderThickness="1" CornerRadius="4" Padding="4" MinHeight="60">
+                                <ItemsControl ItemsSource="{Binding Notes}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate DataType="models:Note">
+                                            <Grid ColumnDefinitions="*,Auto,Auto" Margin="4,4">
+                                                <TextBlock Grid.Column="0" Text="{Binding Name}" VerticalAlignment="Center" FontWeight="SemiBold"/>
+                                                <Button Grid.Column="1" Classes="ghost" Content="Edit" Padding="10,4"
+                                                        Command="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).StartEditNoteCommand}"
+                                                        CommandParameter="{Binding}"/>
+                                                <Button Grid.Column="2" Classes="ghost" Content="✕"
+                                                        ToolTip.Tip="Delete note"
+                                                        Command="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).DeleteNoteCommand}"
+                                                        CommandParameter="{Binding}"/>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </Border>
+
+                            <Button Content="＋  Add note" HorizontalAlignment="Left" Margin="0,4,0,0"
+                                    Command="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).StartAddNoteCommand}"/>
+                        </StackPanel>
+
+                        <StackPanel Spacing="4">
+                            <TextBlock Text="SESSION NOTES FILE" Classes="label"/>
+                            <TextBlock Classes="subtle" Text="Claude reads this on start and appends a summary when you type &quot;checkpoint&quot; in the terminal."/>
+                            <Grid ColumnDefinitions="*,Auto">
+                                <TextBox Grid.Column="0" Text="{Binding SessionNotesPath, Mode=TwoWay}"
+                                         PlaceholderText="docs/session-notes.md (relative to repo root)"/>
+                                <Button Grid.Column="1" Content="📄  Pick" Margin="8,0,0,0"
+                                        Command="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).BrowseSessionNotesCommand}"/>
+                            </Grid>
+                        </StackPanel>
+
+                        <StackPanel Spacing="4">
+                            <TextBlock Text="CUSTOM INITIAL PROMPT" Classes="label"/>
+                            <TextBox Text="{Binding CustomPrompt, Mode=TwoWay}"
+                                     AcceptsReturn="True" TextWrapping="Wrap"
+                                     MinHeight="110"
+                                     PlaceholderText="Additional guidance for Claude (optional)…"/>
+                        </StackPanel>
+
+                        <StackPanel Spacing="8">
+                            <CheckBox IsChecked="{Binding ResumeLastSession, Mode=TwoWay}"
+                                      Content="Resume last session if available (--continue)"
+                                      ToolTip.Tip="--continue is passed only when a prior Claude Code session exists for this repo; otherwise it's skipped so launch doesn't fail."/>
+                            <CheckBox IsChecked="{Binding DangerouslySkipPermissions, Mode=TwoWay}"
+                                      Content="Start with --dangerously-skip-permissions"/>
+                        </StackPanel>
+
+                    </StackPanel>
+                </ScrollViewer>
+                </Grid>
+            </Grid>
+        </Border>
+
+        <!-- Bottom action bar -->
+        <Grid Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1" ColumnDefinitions="*,Auto,Auto" Margin="0,12,0,0">
+            <TextBlock Grid.Column="0" Text="{Binding StatusMessage}" Classes="subtle" VerticalAlignment="Center"/>
+            <Button Grid.Column="1" Content="💾  Save" Command="{Binding SaveCommand}" Margin="0,0,8,0"/>
+            <Button Grid.Column="2" Content="▶  Launch Claude" Classes="primary"
+                    Command="{Binding LaunchCommand}"
+                    IsEnabled="{Binding SelectedProject, Converter={x:Static ObjectConverters.IsNotNull}}"/>
+        </Grid>
+    </Grid>
+</Window>

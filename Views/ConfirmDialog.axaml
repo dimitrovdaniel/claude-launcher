@@ -1,0 +1,46 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="ClaudeLauncher.Views.ConfirmDialog"
+        Title="Confirm"
+        Width="420" SizeToContent="Height"
+        CanResize="False"
+        ShowInTaskbar="False"
+        WindowStartupLocation="CenterOwner">
+
+    <Window.Styles>
+        <Style Selector="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource SystemControlForegroundBaseMediumLowBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="6"/>
+            <Setter Property="Padding" Value="14,7"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontWeight" Value="Medium"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+        <Style Selector="Button:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource SystemControlHighlightListLowBrush}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
+        </Style>
+        <Style Selector="Button.danger">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Background" Value="#DC2626"/>
+            <Setter Property="BorderBrush" Value="#B91C1C"/>
+        </Style>
+        <Style Selector="Button.danger:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="#B91C1C"/>
+            <Setter Property="BorderBrush" Value="#991B1B"/>
+            <Setter Property="TextElement.Foreground" Value="White"/>
+        </Style>
+    </Window.Styles>
+
+    <StackPanel Margin="20" Spacing="12">
+        <TextBlock Name="TitleText" FontSize="16" FontWeight="SemiBold"/>
+        <TextBlock Name="MessageText" TextWrapping="Wrap" FontSize="13" Opacity="0.85"/>
+        <Grid ColumnDefinitions="*,Auto,Auto" Margin="0,8,0,0">
+            <Button Grid.Column="1" Content="Cancel" Click="OnCancel" IsCancel="True"/>
+            <Button Grid.Column="2" Name="ConfirmButton" Classes="danger" Content="Delete"
+                    Click="OnConfirm" IsDefault="True" Margin="8,0,0,0"/>
+        </Grid>
+    </StackPanel>
+</Window>
