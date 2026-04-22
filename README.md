@@ -2,6 +2,8 @@
 
 Skip the setup. Define your Claude Code projects once — repo, files, prompt — and launch them instantly. Works on Windows, macOS, and Linux.
 
+![Claude Launcher](docs/screenshot.png)
+
 ---
 
 ## What is Claude Launcher?
